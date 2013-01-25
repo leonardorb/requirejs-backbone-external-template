@@ -1,1 +1,1 @@
-** RequireJS + BackboneJS + External templating
+## RequireJS + BackboneJS + External templating

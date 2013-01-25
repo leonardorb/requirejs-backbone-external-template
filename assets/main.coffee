@@ -17,6 +17,12 @@ require.config(
 
 require(["jquery", "underscore", "backbone", "text!../../template/empresa.html"], ($, _, Backbone, tmplEmpresa) ->
 
+  empresas = [
+    { name: "Pulse Estética", phone: "62 81317530" }
+    { name: "Estética Brasil", phone: "61 81638000" }
+    { name: "Goiânia Estética", phone: "63 32611805" }
+  ]
+
   class Empresa extends Backbone.Model
     defaults:
       name: "Empresa"
@@ -26,16 +32,30 @@ require(["jquery", "underscore", "backbone", "text!../../template/empresa.html"]
     model: Empresa
 
   class EmpresaView extends Backbone.View
-    el: $("#companies")
+    tagName: "div"
     template: _.template tmplEmpresa
 
+    render: ->
+      @$el.html @template @model.toJSON()
+
+
+  class EmpresasView extends Backbone.View
+    el: $("#companies")
+
     initialize: ->
+      @collection = new Empresas empresas
       @render()
 
     render: ->
-      data = {name: "Teste", phone: "62 81317530"}
-      @$el.html @template data
+      console.log @collection
+      @renderSingle(item) for item in @collection.models
 
-  window.empresas = new EmpresaView()
+    renderSingle: (item) ->
+      console.log item
+      empresaView = new EmpresaView model : item
+      @$el.append empresaView.render()
+
+
+  window.empresas = new EmpresasView()
 
 )

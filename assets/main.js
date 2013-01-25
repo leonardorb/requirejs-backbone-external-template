@@ -25,7 +25,19 @@
   });
 
   require(["jquery", "underscore", "backbone", "text!../../template/empresa.html"], function($, _, Backbone, tmplEmpresa) {
-    var Empresa, EmpresaView, Empresas;
+    var Empresa, EmpresaView, Empresas, EmpresasView, empresas;
+    empresas = [
+      {
+        name: "Pulse Estética",
+        phone: "62 81317530"
+      }, {
+        name: "Estética Brasil",
+        phone: "61 81638000"
+      }, {
+        name: "Goiânia Estética",
+        phone: "63 32611805"
+      }
+    ];
     Empresa = (function(_super) {
 
       __extends(Empresa, _super);
@@ -63,27 +75,57 @@
         return EmpresaView.__super__.constructor.apply(this, arguments);
       }
 
-      EmpresaView.prototype.el = $("#companies");
+      EmpresaView.prototype.tagName = "div";
 
       EmpresaView.prototype.template = _.template(tmplEmpresa);
 
-      EmpresaView.prototype.initialize = function() {
-        return this.render();
-      };
-
       EmpresaView.prototype.render = function() {
-        var data;
-        data = {
-          name: "Teste",
-          phone: "62 81317530"
-        };
-        return this.$el.html(this.template(data));
+        return this.$el.html(this.template(this.model.toJSON()));
       };
 
       return EmpresaView;
 
     })(Backbone.View);
-    return window.empresas = new EmpresaView();
+    EmpresasView = (function(_super) {
+
+      __extends(EmpresasView, _super);
+
+      function EmpresasView() {
+        return EmpresasView.__super__.constructor.apply(this, arguments);
+      }
+
+      EmpresasView.prototype.el = $("#companies");
+
+      EmpresasView.prototype.initialize = function() {
+        this.collection = new Empresas(empresas);
+        return this.render();
+      };
+
+      EmpresasView.prototype.render = function() {
+        var item, _i, _len, _ref, _results;
+        console.log(this.collection);
+        _ref = this.collection.models;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          item = _ref[_i];
+          _results.push(this.renderSingle(item));
+        }
+        return _results;
+      };
+
+      EmpresasView.prototype.renderSingle = function(item) {
+        var empresaView;
+        console.log(item);
+        empresaView = new EmpresaView({
+          model: item
+        });
+        return this.$el.append(empresaView.render());
+      };
+
+      return EmpresasView;
+
+    })(Backbone.View);
+    return window.empresas = new EmpresasView();
   });
 
 }).call(this);
