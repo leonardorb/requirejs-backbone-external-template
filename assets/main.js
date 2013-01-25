@@ -65,18 +65,19 @@
 
       EmpresaView.prototype.el = $("#companies");
 
+      EmpresaView.prototype.template = _.template(tmplEmpresa);
+
       EmpresaView.prototype.initialize = function() {
         return this.render();
       };
 
       EmpresaView.prototype.render = function() {
-        var compiledTemplate, data;
+        var data;
         data = {
           name: "Teste",
           phone: "62 81317530"
         };
-        compiledTemplate = _.template(tmplEmpresa, data);
-        return this.$el.html(compiledTemplate);
+        return this.$el.html(this.template(data));
       };
 
       return EmpresaView;

@@ -27,14 +27,14 @@ require(["jquery", "underscore", "backbone", "text!../../template/empresa.html"]
 
   class EmpresaView extends Backbone.View
     el: $("#companies")
+    template: _.template tmplEmpresa
 
     initialize: ->
       @render()
 
     render: ->
       data = {name: "Teste", phone: "62 81317530"}
-      compiledTemplate = _.template(tmplEmpresa, data)
-      @$el.html compiledTemplate
+      @$el.html @template data
 
   window.empresas = new EmpresaView()
 
