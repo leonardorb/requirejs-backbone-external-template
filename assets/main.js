@@ -64,6 +64,10 @@
 
       Empresas.prototype.model = Empresa;
 
+      Empresas.prototype.comparator = function(model) {
+        return model.get("name");
+      };
+
       return Empresas;
 
     })(Backbone.Collection);
@@ -103,7 +107,7 @@
 
       EmpresasView.prototype.render = function() {
         var item, _i, _len, _ref, _results;
-        console.log(this.collection);
+        this.$el.html("");
         _ref = this.collection.models;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -115,7 +119,6 @@
 
       EmpresasView.prototype.renderSingle = function(item) {
         var empresaView;
-        console.log(item);
         empresaView = new EmpresaView({
           model: item
         });

@@ -31,6 +31,9 @@ require(["jquery", "underscore", "backbone", "text!../../template/empresa.html"]
   class Empresas extends Backbone.Collection
     model: Empresa
 
+    comparator: (model) ->
+      model.get "name"
+
   class EmpresaView extends Backbone.View
     tagName: "div"
     template: _.template tmplEmpresa
@@ -47,11 +50,10 @@ require(["jquery", "underscore", "backbone", "text!../../template/empresa.html"]
       @render()
 
     render: ->
-      console.log @collection
+      @$el.html ""
       @renderSingle(item) for item in @collection.models
 
     renderSingle: (item) ->
-      console.log item
       empresaView = new EmpresaView model : item
       @$el.append empresaView.render()
 
